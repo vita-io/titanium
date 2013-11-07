@@ -1,5 +1,5 @@
 (ns clojurewerkz.titanium.types
-  (:import (com.thinkaurelius.titan.core TypeGroup TitanType TypeMaker$UniquenessConsistency)
+  (:import (com.thinkaurelius.titan.core TitanType TypeMaker$UniquenessConsistency)
            (com.tinkerpop.blueprints Vertex Edge Direction Graph))
   (:use [clojurewerkz.titanium.graph :only (get-graph ensure-graph-is-transaction-safe)]))
 
@@ -7,15 +7,6 @@
   [tname]
   (ensure-graph-is-transaction-safe)
   (.getType (get-graph) (name tname)))
-
-;; The default type group when no group is specified during type construction.
-(def default-group (TypeGroup/DEFAULT_GROUP))
-
-(defn defgroup
-  "Define a TitanGroup."
-  [group-id group-name]
-  (ensure-graph-is-transaction-safe)
-  (TypeGroup/of group-id group-name))
 
 (defn- convert-bool-to-lock
   [b]
@@ -45,8 +36,7 @@
                 primary-key nil
                 signature   nil
                 unique-direction false
-                unique-locked    true
-                group       default-group}}]
+                unique-locked    true}}]
      (ensure-graph-is-transaction-safe)
      (let [type-maker (.. (get-graph)
                           makeType
@@ -70,8 +60,7 @@
                             indexed-edge?
                             searchable?]
                      :or   {unique-direction false
-                            unique-locked    true
-                            group       default-group}}]
+                            unique-locked    true}}]
      (ensure-graph-is-transaction-safe)
      (let [type-maker   (.. (get-graph)
                             makeType

@@ -10,18 +10,6 @@
   (clear-db)
   (tg/open conf)
 
-  (testing "Create group."
-    (tg/transact!
-     (let [my-group-name "My-Group-Name"
-           my-group (tt/defgroup 100 my-group-name)
-           default-group-id (.getID tt/default-group)]
-       (is (= my-group-name (.getName my-group))
-           "The group has the correct name")
-       (is (= 100 (.getID my-group))
-           "The group has the correct ID")
-       (is (not (= default-group-id (.getID my-group)))
-           "my-group has a different ID from the default group"))))
-
   (testing "Create property key."
     (testing "With no parameters."
       (tg/transact!
@@ -162,14 +150,11 @@
          (is (.isDirected lab))
          (is (not (.isUnidirected lab)))
          (is (not (.isUnique lab Direction/IN)))
-         (is (not (.isUnique lab Direction/OUT)))
-         (is (= tt/default-group (.getGroup lab)) "the label has the default group"))))
+         (is (not (.isUnique lab Direction/OUT))))))
 
-    (testing "Unidirected, nondefault group, unique direction."
+    (testing "Unidirected, unique direction."
       (tg/transact!
-       (let [test-group (tt/defgroup 60 "test")
-             label (tt/deflabel :second-label {:direction "unidirected"
-                                                        :group test-group
+       (let [label (tt/deflabel :second-label {:direction "unidirected"
                                                         :unique-direction :out})
              lab (tt/get-type :second-label)]
          (is (.isEdgeLabel lab))
@@ -178,6 +163,5 @@
          (is (not (.isDirected lab)))
          (is (.isUnidirected lab))
          (is (not (.isUnique lab Direction/IN)))
-         (is (.isUnique lab Direction/OUT))
-         (is (= test-group (.getGroup lab)) "the label has the default group")))))
+         (is (.isUnique lab Direction/OUT))))))
   (tg/shutdown))
