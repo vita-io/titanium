@@ -2,7 +2,7 @@
   (:require [clojurewerkz.titanium.graph    :as tg]
             [clojurewerkz.titanium.vertices :as tv]
             [clojurewerkz.titanium.edges    :as ted]
-            [clojurewerkz.titanium.types    :as tt]            
+            [clojurewerkz.titanium.types    :as tt]
             [clojurewerkz.support.io        :as sio]
             [archimedes.core                :as c])
   (:use clojure.test
@@ -45,7 +45,7 @@
            StandardTitanGraph)))
 
   (testing "Stored graph"
-    (let [vertex (tg/transact! (.addVertex c/*graph*))]      
+    (let [vertex (tg/transact! (.addVertex c/*graph*))]
       (is (= StandardVertex (type vertex)))))
 
   (testing "Stored graph"
@@ -64,16 +64,16 @@
                      (do @f1 @f2)) "The futures throw errors.")))
     (testing "With retries"
       (let [random-long (long (rand-int 100000))
-            f1 (future (tg/retry-transact! 3 100 
+            f1 (future (tg/retry-transact! 3 100
                                            (tv/upsert! :vertex-id {:vertex-id random-long})))
-            f2 (future (tg/retry-transact! 3 100 
+            f2 (future (tg/retry-transact! 3 100
                                            (tv/upsert! :vertex-id {:vertex-id random-long})))]
 
         (is (= random-long
                (tg/transact!
                 (tv/get (tv/refresh (first @f1)) :vertex-id))
                (tg/transact!
-                (tv/get (tv/refresh (first @f2)) :vertex-id))) 
+                (tv/get (tv/refresh (first @f2)) :vertex-id)))
             "The futures have the correct values.")
         (is (= 1 (count
                   (tg/transact! (tv/find-by-kv :vertex-id random-long))))
@@ -82,9 +82,9 @@
   (testing "With retries and an exponential backoff function"
     (let [backoff-fn (fn [try-count] (+ (Math/pow 10 try-count) (* try-count (rand-int 100))))
           random-long (long (rand-int 100000))
-          f1 (future (tg/retry-transact! 3 backoff-fn 
+          f1 (future (tg/retry-transact! 3 backoff-fn
                                          (tv/upsert! :vertex-id {:vertex-id random-long})))
-          f2 (future (tg/retry-transact! 3 backoff-fn 
+          f2 (future (tg/retry-transact! 3 backoff-fn
                                          (tv/upsert! :vertex-id {:vertex-id random-long})))]
 
       (is (= random-long

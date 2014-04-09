@@ -2,9 +2,9 @@
   (:import (org.apache.commons.io FileUtils)))
 
 
-(def cs-dir (str (clojure.java.io/as-url 
-              (clojure.java.io/as-file 
-                (str (System/getProperty "user.dir") 
+(def cs-dir (str (clojure.java.io/as-url
+              (clojure.java.io/as-file
+                (str (System/getProperty "user.dir")
                   "/resources/test-cassandra.yaml")))))
 
 (def conf {;; Embedded cassandra settings
@@ -12,9 +12,11 @@
            "storage.cassandra-config-dir" cs-dir
            ;; Embedded elasticsearch settings
            "storage.index.search.backend" "elasticsearch"
-           "storage.index.search.directory" "/tmp/cassandra/elasticsearch"
+           "storage.index.search.directory" "/tmp/titanium-test/elasticsearch"
            "storage.index.search.client-only" false
-           "storage.index.search.local-mode" true})
+           "storage.index.search.local-mode" true
+           "storage.compression.enabled" false
+           "storage.cassandra.db.compression.enabled" false})
 
 (defn clear-db []
   (FileUtils/deleteDirectory (java.io.File. "/tmp/titanium-test")))

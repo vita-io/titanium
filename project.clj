@@ -2,10 +2,11 @@
   :description "Titanium a powerful Clojure graph library build on top of Aurelius Titan"
   :url "http://titanium.clojurewerkz.org"
   :license {:name "Eclipse Public License"}
-  :dependencies [[org.clojure/clojure                "1.5.1"]
+  :jvm-opts     ["-javaagent:lib/jamm-0.2.5.jar"]
+  :dependencies [[org.clojure/clojure                "1.6.0"]
                  [clojurewerkz/support               "0.15.0"]
-                 [com.thinkaurelius.titan/titan-all  "0.4.0"]
-                 [potemkin "0.2.0"]
+                 [com.thinkaurelius.titan/titan-all  "0.4.2"]
+                 [potemkin "0.3.4"]
                  [clojurewerkz/ogre "2.3.0.1"]
                  [clojurewerkz/archimedes "1.0.0-alpha4"]]
   :source-paths  ["src/clojure"]

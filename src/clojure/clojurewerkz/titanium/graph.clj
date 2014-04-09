@@ -38,7 +38,7 @@
 
 (g/set-pre-fn! ensure-graph-is-transaction-safe)
 
-(defn convert-config-map 
+(defn convert-config-map
   [m]
   (let [conf (org.apache.commons.configuration.BaseConfiguration.)]
     (doseq [[k1 v1] m]
@@ -67,7 +67,7 @@
 
 (defn open?
   []
-  (and 
+  (and
     (bound? #'archimedes.core/*graph*)
     (not (nil? archimedes.core/*graph*))
     (.isOpen archimedes.core/*graph*)))

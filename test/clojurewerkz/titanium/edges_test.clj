@@ -163,11 +163,11 @@
   (testing "Refresh"
     (let [v1 (tg/transact! (tv/create! {:name "v1"}))
           v2 (tg/transact! (tv/create! {:name "v2"}))
-          edge (tg/transact! 
+          edge (tg/transact!
                 (ted/connect! (tv/refresh v1) :connexion (tv/refresh v2) {:name "bob"}))]
-      (is (tg/transact! 
+      (is (tg/transact!
            (= (.getId edge) (.getId (ted/refresh edge)))))
-      (is (tg/transact! 
+      (is (tg/transact!
            (is (= "bob" (:name (ted/to-map (ted/refresh edge)))))))))
 
   (testing "Edges between"
@@ -176,9 +176,9 @@
           edge (tg/transact! (ted/connect! (tv/refresh v1) :connexion (tv/refresh v2)))]
       (is edge)
       (is (tg/transact! (= (ted/to-map (ted/refresh edge))
-                           (ted/to-map (first  
+                           (ted/to-map (first
                                         (ted/edges-between (tv/refresh v1) (tv/refresh v2)))))))))
-  
+
   (testing "Upconnect!"
     (testing "Upconnecting once without data"
       (tg/transact!
