@@ -3,6 +3,7 @@
 Titanium is a Clojure graph library built on top of [Titan](http://thinkaurelius.github.com/titan/)
 and the [Tinkerpop stack](http://tinkerpop.com).
 
+# Disclaimer: Titanium development is currently on hiatus. There are major breaking changes that need to be made to this library and the documentation and the primary developer ([zmaril](http://github.com/zmaril)) is too busy finishing college to make them. If you are interested in making the changes, please get in touch, otherwise beware!
 
 ## Project Goals
 
@@ -104,9 +105,14 @@ on Github.
 
 ## License
 
-Copyright (C) 2013 Michael S. Klishin, Alex Petrov.
+Copyright (C) 2013-2014 Michael S. Klishin, Alex Petrov, Zack Maril, and
+the ClojureWerkz team.
 
 Double licensed under the [Eclipse Public License](http://www.eclipse.org/legal/epl-v10.html) (the same as Clojure) or the [Apache Public License 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 [Titan](http://thinkaurelius.github.com/titan/) is licensed under the [Apache Public License 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
+
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/clojurewerkz/titanium/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
