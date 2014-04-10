@@ -29,64 +29,69 @@
   [type-maker unique-direction unique-locked]
   (when unique-direction
     (when (#{:both :in} unique-direction)
-      (.unique type-maker 
-               Direction/IN                  
+      (.unique type-maker
+               Direction/IN
                (convert-bool-to-lock unique-locked)))
     (when (#{:both :out} unique-direction)
-      (.unique type-maker 
-               Direction/OUT                  
+      (.unique type-maker
+               Direction/OUT
                (convert-bool-to-lock unique-locked)))))
 
 (defn deflabel
   "Creates a edge label with the given properties."
   ([tname] (deflabel tname {}))
   ([tname {:keys [simple direction primary-key signature
-                  unique-direction unique-locked group]
+                  unique-direction unique-locked]
            :or {direction "directed"
                 primary-key nil
                 signature   nil
-                unique-direction false
+                type :m->m ; :m->1 :1->1 :1->m
                 unique-locked    true}}]
      (ensure-graph-is-transaction-safe)
      (let [type-maker (.. (get-graph)
-                          makeType
-                          (name (name tname))
-                          (group group))]
-       (unique-direction-converter type-maker unique-direction unique-locked)
+                          (makeLabel (name (name tname))))]
+      (case type
+        :m->m (.manyToMany type-maker)
+        :m->1 (.manyToOne  type-maker (convert-bool-to-lock unique-locked))
+        :1->1 (.oneToOne   type-maker (convert-bool-to-lock unique-locked))
+        :1->m (.oneToMany  type-maker (convert-bool-to-lock unique-locked))
+        nil)
        (case direction
          "directed"    (.directed type-maker)
          "unidirected" (.unidirected type-maker))
        (when signature (.signature type-maker signature))
-       (when primary-key (.primaryKey type-maker (into-array TitanType primary-key)))
-       (.makeEdgeLabel type-maker))))
+       (when primary-key (.sortKey type-maker (into-array TitanType primary-key)))
+       (.make type-maker))))
 
 (defn defkey
   "Creates a property key with the given properties."
   ([tname data-type] (defkey tname data-type {}))
-  ([tname data-type {:keys [unique-direction 
-                            unique-locked 
-                            group
+  ([tname data-type {:keys [type ; :unique / :single / nil ; TODO add support for Keymaker.list
+                            unique-locked
                             indexed-vertex?
                             indexed-edge?
                             searchable?]
-                     :or   {unique-direction false
-                            unique-locked    true}}]
+                     :or   {type          nil
+                            unique-locked true}}]
      (ensure-graph-is-transaction-safe)
      (let [type-maker   (.. (get-graph)
-                            makeType
-                            (name (name tname))
-                            (group group)
+                            (makeKey (name (name tname)))
                             (dataType data-type))]
-       (when indexed-vertex? 
+       (when indexed-vertex?
          (if searchable?
            (.indexed type-maker "search" Vertex)
            (.indexed type-maker Vertex)))
-       (when indexed-edge? 
+       (when indexed-edge?
          (if searchable?
            (.indexed type-maker "search" Edge)
            (.indexed type-maker Edge)))
-       (unique-direction-converter type-maker unique-direction unique-locked)
-       (.makePropertyKey type-maker))))
+
+       (case type
+        :unique (.unique type-maker (convert-bool-to-lock unique-locked))
+        :single (.single type-maker (convert-bool-to-lock unique-locked))
+        :list   (.list type-maker)
+        nil)
+       (.make type-maker))))
 
 (defn deflabel-once
   "Checks to see if a edge label with the given name exists already.

@@ -54,7 +54,7 @@
   (testing "Dueling transactions"
     (tg/transact!
      (tt/defkey-once :vertex-id Long {:indexed-vertex? true
-                                                   :unique-direction :both}))
+                                                   :type :unique}))
     (testing "Without retries"
       (let [random-long (long (rand-int 100000))
             f1 (future (tg/transact! (tv/upsert! :vertex-id {:vertex-id random-long})))
