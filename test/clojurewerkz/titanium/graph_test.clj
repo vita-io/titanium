@@ -34,8 +34,8 @@
 
 
 (deftest test-conf-graph
-  (clear-db)
   (tg/open conf)
+  (clear-db)
 
   (testing "Is the graph open?"
     (is (tg/open?)))
@@ -95,5 +95,4 @@
       (is (= 1 (count
                 (tg/transact! (tv/find-by-kv :vertex-id random-long))))
           "*graph* has only one vertex with the specified vertex-id")))
-  (tg/shutdown)
-  (clear-db))
+  (tg/shutdown))

@@ -7,8 +7,8 @@
             [clojurewerkz.titanium.graph :as tg]))
 
 (deftest test-types
-  (clear-db)
   (tg/open conf)
+  (clear-db)
 
   (testing "Create property key."
     (testing "With no parameters."
@@ -24,7 +24,7 @@
          (is (not (.isUnique k Direction/IN))))))
 
     (testing "With indexed vertex."
-      (tg/transact!    
+      (tg/transact!
        (tt/defkey :second-key Integer
                                {:indexed-vertex? true})
        (let [k (tt/get-type :second-key)]
@@ -37,7 +37,7 @@
          (is (not (.isUnique k Direction/IN))))))
 
     (testing "With indexed vertex."
-      (tg/transact! 
+      (tg/transact!
        (tt/defkey :third-key Integer
                                {:indexed-vertex? true
                                 :unique-direction :out})
@@ -51,7 +51,7 @@
          (is (not (.isUnique k Direction/IN))))))
 
     (testing "With indexed edge."
-      (tg/transact! 
+      (tg/transact!
        (tt/defkey :fourth-key Integer
                                {:indexed-edge? true
                                 :unique-direction :out})
@@ -65,7 +65,7 @@
          (is (not (.isUnique k Direction/IN))))))
 
     (testing "With searchable vertex."
-      (tg/transact! 
+      (tg/transact!
        (tt/defkey :fifth-key Integer
                                {:indexed-vertex? true
                                 :searchable? true
@@ -80,9 +80,9 @@
          (is (not (.hasIndex k "search" Edge)))
          (is (.isUnique k Direction/OUT))
          (is (not (.isUnique k Direction/IN))))))
-    
+
     (testing "With searchable edge."
-      (tg/transact! 
+      (tg/transact!
        (tt/defkey :sixth-key Integer
                                {:indexed-edge? true
                                 :searchable? true
@@ -99,7 +99,7 @@
          (is (not (.isUnique k Direction/IN))))))
 
     (testing "Unique property in both directions."
-      (tg/transact! 
+      (tg/transact!
        (tt/defkey :seventh-key Long
                                {:indexed-vertex? true
                                 :indexed-edge? true
@@ -119,7 +119,7 @@
                       (tv/create! {:seventh-key 1}))))))
 
     (testing "Search all the things."
-      (tg/transact! 
+      (tg/transact!
        (tt/defkey :eighth-key Integer
                                {:indexed-edge? true
                                 :indexed-vertex? true

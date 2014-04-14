@@ -9,8 +9,8 @@
 
 ;; The Graph of the Gods example from the Titan wiki
 (deftest test-integration-example1
-  (clear-db)
   (tg/open conf)
+  (clear-db)
   (tg/transact!
    (let [saturn   (tv/create! {:name "Saturn"   :type "titan"})
          jupiter  (tv/create! {:name "Jupiter"  :type "god"})

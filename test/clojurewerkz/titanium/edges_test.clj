@@ -8,8 +8,8 @@
 
 
 (deftest test-edges
-  (clear-db)
   (tg/open conf)
+  (clear-db)
 
   (testing "creating and immediately finding a relationship without properties"
     (tg/transact!
@@ -240,7 +240,7 @@
          (is (thrown-with-msg? Throwable #"There were 2 vertices returned."
                                (ted/unique-upconnect! v1 :connexion v2))))))
     (tg/shutdown)
-    (clear-db)))
+    ))
 
 
 

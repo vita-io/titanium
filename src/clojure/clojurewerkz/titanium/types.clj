@@ -24,19 +24,6 @@
     TypeMaker$UniquenessConsistency/LOCK
     TypeMaker$UniquenessConsistency/NO_LOCK))
 
-
-(defn unique-direction-converter
-  [type-maker unique-direction unique-locked]
-  (when unique-direction
-    (when (#{:both :in} unique-direction)
-      (.unique type-maker
-               Direction/IN
-               (convert-bool-to-lock unique-locked)))
-    (when (#{:both :out} unique-direction)
-      (.unique type-maker
-               Direction/OUT
-               (convert-bool-to-lock unique-locked)))))
-
 (defn deflabel
   "Creates a edge label with the given properties."
   ([tname] (deflabel tname {}))

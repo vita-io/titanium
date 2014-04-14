@@ -1,14 +1,14 @@
 (ns clojurewerkz.titanium.element-test
   (:use [clojure.test]
-        [clojurewerkz.titanium.conf :only (conf clear-db)])
+        [clojurewerkz.titanium.conf :only (conf remove-db)])
   (:import [com.thinkaurelius.titan.graphdb.relations RelationIdentifier])
   (:require [clojurewerkz.titanium.graph :as g]
             [clojurewerkz.titanium.vertices :as v]
             [clojurewerkz.titanium.edges :as e]))
 
 (deftest element-test
-  (clear-db)
-  (g/open conf)  
+  (remove-db)
+  (g/open conf)
   (testing "Get keys."
     (g/transact! (let [a (v/create! {:name "v1" :a 1 :b 1})
                        b (v/create! {:name "v2" :a 1 :b 1})
